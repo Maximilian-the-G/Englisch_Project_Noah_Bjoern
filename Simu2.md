@@ -23,7 +23,7 @@ import: https://raw.githubusercontent.com/liaTemplates/AVR8js/main/README.md
 #include <Adafruit_NeoPixel.h>
 
 #define PIN 6 // Pin, an dem der Datenpin des LED-Streifens angeschlossen ist
-#define NUMPIXELS 30 // Anzahl der LEDs im Streifen
+#define NUMPIXELS 12 // Anzahl der LEDs im Streifen
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
@@ -33,28 +33,28 @@ float heartPattern[NUMPIXELS];
 void setup() {
   strip.begin();
   strip.show(); // Initialisieren Sie alle Pixel auf 'aus'
-
-  // Herzmuster generieren
-  generateHeartPattern();
+  generateHeartPattern(); // Herzmuster generieren
 }
 
 void loop() {
-  // Zeige das Herzmuster an
-  displayHeartPattern();
-  delay(100); // Warte kurz, um das Muster sichtbar zu machen
+  static int offset = 0; // Position des Herzmusters
+  displayHeartPattern(offset); // Zeige das Herzmuster an
+  offset = (offset - 1 + NUMPIXELS) % NUMPIXELS; // Verschiebe das Muster nach links und setze es zurück, wenn es das Ende erreicht
+  delay(200); // Warte kurz, um das Muster sichtbar zu machen
 }
 
 // Funktion zur Generierung eines Herzmusters (Sinuskurve)
 void generateHeartPattern() {
   for (int i = 0; i < NUMPIXELS; i++) {
-    heartPattern[i] = (sin(i * 0.2) + 1) * 127; // Werte zwischen 0 und 254
+    heartPattern[i] = (sin(i * (PI / 6.0)) + 1) * 127.5; // Werte zwischen 0 und 255
   }
 }
 
-// Funktion zur Anzeige des Herzmusters
-void displayHeartPattern() {
+// Funktion zur Anzeige des Herzmusters mit Verschiebung
+void displayHeartPattern(int offset) {
   for (int i = 0; i < NUMPIXELS; i++) {
-    int brightness = (int)heartPattern[i];
+    int index = (i + offset) % NUMPIXELS; // Berechne den Index mit Verschiebung
+    int brightness = (int)heartPattern[index];
     strip.setPixelColor(i, strip.Color(brightness, 0, 0)); // Setzt die Farbe der LEDs auf rot mit variabler Helligkeit
   }
   strip.show();
