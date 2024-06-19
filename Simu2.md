@@ -58,6 +58,5 @@ void displayHeartPattern(int offset) {
     strip.setPixelColor(i, strip.Color(brightness, 0, 0)); // Setzt die Farbe der LEDs auf rot mit variabler Helligkeit
   }
   strip.show();
-}
-```
+}```
 @AVR8js.sketch(matrix-experiment)
