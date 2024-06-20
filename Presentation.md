@@ -72,6 +72,16 @@ How does it work?
 
 To simulate the LED heart pattern, you can use the following code on an Arduino board connected to a NeoPixel strip:
 
+# Simulation
+
+## Working simulation
+
+<div id="matrix-experiment">
+<wokwi-neopixel-matrix pin="6" cols="12" rows="1"></wokwi-neopixel-matrix>
+<span id="simulation-time"></span>
+</div>
+
+```cpp             Automata
 #include <Adafruit_NeoPixel.h>
 
 #define PIN 6 // Pin, an dem der Datenpin des LED-Streifens angeschlossen ist
@@ -91,8 +101,8 @@ void setup() {
 void loop() {
   static int offset = 0; // Position des Herzmusters
   displayHeartPattern(offset); // Zeige das Herzmuster an
-  offset = (offset - 1 + NUMPIXELS) % NUMPIXELS; // bewegung
-  delay(200); // sichtbarkeit delay
+  offset = (offset - 1 + NUMPIXELS) % NUMPIXELS; // Verschiebe das Muster nach links und setze es zurück, wenn es das Ende erreicht
+  delay(200); // Warte kurz, um das Muster sichtbar zu machen
 }
 
 // Funktion zur Generierung eines Herzmusters (Sinuskurve)
@@ -111,3 +121,5 @@ void displayHeartPattern(int offset) {
   }
   strip.show();
 }
+```
+@AVR8js.sketch(matrix-experiment)
